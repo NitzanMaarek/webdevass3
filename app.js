@@ -43,7 +43,7 @@ app.post("/registerUser", function(req, res){
     var questions_answers_list = "";
 
     for (let i = 0; i < interests.length; i++) { // Checked for one category
-        let str = "(" + "'" + userName + "','" + interests[i] + "',0),";
+        let str = "(" + "'" + userName + "','" + interests[i] + "),";
         // let str = userName + ',"' + interests[i] + '",0';
         interest_list = interest_list + str;
     }
@@ -62,7 +62,7 @@ app.post("/registerUser", function(req, res){
     let p = DButilsAzure.execQuery("INSERT INTO Users (userName, pass, fName, lName, city, country, email)\n" +
         "VALUES ('" + userName + "','" + pw + "','" + fname + "','" + lname + "','" + city + "','" + country + "','" + email + "')" );
     p.then(function(ans1){
-        p2 = DButilsAzure.execQuery("INSERT INTO UsersToPOIs (userName, poiName, isFavourite) VALUES" + interest_list);
+        p2 = DButilsAzure.execQuery("INSERT INTO UsersToCategories (userName, poiName) VALUES" + interest_list);
         p2.then(function(ans2){
             if(ans2.length === 0) {
                 p3 = DButilsAzure.execQuery("INSERT INTO SecurityQuestions (userName, question, answer) VALUES" + questions_answers_list);
