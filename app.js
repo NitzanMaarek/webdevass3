@@ -296,8 +296,8 @@ app.post("/auth/removeInterestFromFavorites", function(req,res){
     });
 });
 
-app.get("/auth/getNumberOfFavorites", function(req,res){
-    let username = req.body.userName;
+app.get("/auth/getNumberOfFavorites/:userName", function(req,res){
+    let username = req.params.userName;
     let p = DButilsAzure.execQuery("SELECT COUNT(*) AS count FROM UsersToPOIs WHERE userName = '" + username + "' AND isFavourite = '" + 1 + "'");
     p.then(function(ans){
         if(ans.length > 0){
