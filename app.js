@@ -166,8 +166,8 @@ app.get("/getRandomPOI/:number", function(req,res){ // Checked
     });
 });
 
-app.get("/auth/getUserFavoriteInterests", function(req,res){
-    let userName = req.body.userName;
+app.get("/auth/getUserFavoriteInterests/:userName", function(req,res){
+    let userName = req.params.userName;
 
     let p = DButilsAzure.execQuery("SELECT * FROM UsersToPOIs WHERE userName = '" + userName + "' AND isFavourite = 1");
 
