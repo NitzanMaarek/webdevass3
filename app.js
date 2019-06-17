@@ -233,8 +233,8 @@ app.get("/getInterestRank", function(req,res){
     });
 });
 
-app.get("/getInterestByName", function(req,res){
-    let poiName = req.body.poiName;
+app.get("/getInterestByName/:poiName", function(req,res){
+    let poiName = req.params.poiName;
 
     let p = DButilsAzure.execQuery("SELECT * FROM POIs WHERE poiName = '" + poiName + "'");
 
