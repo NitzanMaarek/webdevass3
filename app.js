@@ -230,8 +230,8 @@ app.get("/getInterestsByCategories", function(req,res) {
 });
 
 
-app.get("/getInterestRank", function(req,res){
-    let poiName = req.body.poiName;
+app.get("/getInterestRank/:poiName", function(req,res){
+    let poiName = req.params.poiName;
 
     let p = DButilsAzure.execQuery("SELECT AVG(reviewRank) AS average FROM Reviews WHERE poiName = '" + poiName + "'");
 
@@ -313,7 +313,7 @@ app.put("/auth/setRankToInterest", function(req,res){
 });
 
 
-app.put("/auth/addReview", function(req,res){
+app.post("/auth/addReview", function(req,res){
    let poiName = req.body.poiName;
    let description = req.body.reviewDescription;
    let rank = req.body.reviewRank;
