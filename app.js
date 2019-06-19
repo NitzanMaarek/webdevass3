@@ -272,29 +272,14 @@ app.post("/auth/addInterestToFavorites", function(req,res){
            });
        }
     });
-    // let p = DButilsAzure.execQuery("SELECT * FROM UsersToPOIs WHERE name = '" + req.body.name +
-    //     " and userName = " + req.body.userName + "'");
-    // p.then(function(ans){
-    //    let p2 = DButilsAzure.executeQuery(
-    //        "INSERT INTO UsersToPOIs (userID, poiID, isFavourite)\n" +
-    //        "VALUES (" + req.body.userID + "," + result.body.poiID + ", 1)");
-    //    p2.then(function(ans2){
-    //       let p3 = DButilsAzure.executeQuery(
-    //           "UPDATE UsersToPOIs\n" +
-    //           "SET isFavourite = 1'\n" +
-    //           "WHERE userName = " + req.body.userName + "and poiName = " +req.body.poiName + " ;");
-    //       p3.then(function(ans3){
-    //           res.send(ans3);
-    //       })
-    //    });
-    // });
+
 });
 
 app.post("/auth/removeInterestFromFavorites", function(req,res){
     let poiName = req.body.poiName;
     let userName = req.body.userName;
 
-    let p = DButilsAzure.execQuery("UPDATE UsersToPOIs SET isFavourite = 0 WHERE userName = '" + userName + "' AND poiName = '" + poiName + "'");
+    let p = DButilsAzure.execQuery("DELETE FROM UsersToPOIs WHERE userName = '" + userName + "' AND poiName = '" + poiName + "'");
 
     p.then(function(ans){
        res.send(ans)
