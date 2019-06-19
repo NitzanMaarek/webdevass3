@@ -23,11 +23,18 @@ var countryDictionary = {
 
 secret = "secret";
 
+app.use(function(req,res,next){
+    res.header("Access-Control-Allow-Origin","*");
+    res.header("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 app.get("/getCountries", function(req, res){
     res.send(countryDictionary);
 });
 
 app.post("/registerUser", function(req, res){
+
     let userName = req.body.userName;
     let pw = req.body.password;
     let fname = req.body.fname;
@@ -282,7 +289,6 @@ app.post("/auth/addInterestToFavorites", function(req,res){
     //    });
     // });
 });
-
 
 app.post("/auth/removeInterestFromFavorites", function(req,res){
     let poiName = req.body.poiName;
