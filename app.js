@@ -262,7 +262,10 @@ app.get("/getInterestRank/:poiName", function(req,res){
     let p = DButilsAzure.execQuery("SELECT AVG(reviewRank) AS average FROM Reviews WHERE poiName = '" + poiName + "'");
 
     p.then(function(ans){
-       res.send(ans);
+       if(ans[0]['average'] == null){
+           ans[0]['average'] = "0";
+       }
+        res.send(ans);
     });
 });
 
@@ -355,6 +358,7 @@ app.post("/auth/addReview", function(req,res){
                  "VALUES ('" + poiName + "','" + ans2[0].LastID + "')");
              p3.then(function(ans3){
                  res.send(ans3);
+                // p4 = DButilsAzure.execQuery()
              })
          }
          else{
@@ -365,16 +369,16 @@ app.post("/auth/addReview", function(req,res){
 });
 
 
-app.get("/getReviews", function(req,res){
-    let poiName = req.body.poiName;
+app.get("/getReviews/:poiName", function(req,res){
+    let poiName = req.params.poiName;
     let p = DButilsAzure.execQuery("SELECT * FROM Reviews WHERE poiName = '" + poiName + "'");
     p.then(function(ans){
         if(ans.length > 0) {
             res.send(ans)
         }
-        else{
-            res.send("No reviews found.");
-        }
+        // else{
+        //     res.send("No reviews found.");
+        // }
     });
 });
 
