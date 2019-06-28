@@ -36,7 +36,23 @@ app.get("/getCountries", function(req, res){
 app.post("/registerUser", function(req, res){
 
     let userName = req.body.userName;
+    if (userName.length < 3) {
+        res.send('Username is too short');
+        return;
+    } else if (userName.length > 8) {
+        res.send('Username is too long');
+        return;
+    } else if (!userName.match("^[A-z]+$")) {
+        res.send('Username must contain letters only');
+        return;
+    }
+
     let pw = req.body.password;
+    if (!pw.match("^[A-z0-9]+$")) {
+        res.send('Password must contain letters and numbers only');
+        return;
+    }
+
     let fname = req.body.fname;
     let lname = req.body.lname;
     let city = req.body.city;
@@ -69,10 +85,20 @@ app.post("/registerUser", function(req, res){
     let p = DButilsAzure.execQuery("INSERT INTO Users (userName, pass, fName, lName, city, country, email)\n" +
         "VALUES ('" + userName + "','" + pw + "','" + fname + "','" + lname + "','" + city + "','" + country + "','" + email + "')" );
     p.then(function(ans1){
-        p2 = DButilsAzure.execQuery("INSERT INTO UsersToCategories (userName, poiName) VALUES" + interest_list);
+        let values = "";
+        for (let i = 0; i < interests.length; i++) {
+            values = values + "('" + userName + "','" + interests[i] + "'), ";
+        }
+            p2 = DButilsAzure.execQuery("INSERT INTO UsersToCategories (userName, categoryName) VALUES "
+                + values.substring(0, values.length - 2));
         p2.then(function(ans2){
             if(ans2.length === 0) {
-                p3 = DButilsAzure.execQuery("INSERT INTO SecurityQuestions (userName, question, answer) VALUES" + questions_answers_list);
+                values = "";
+                for (let i = 0; i < questions.length; i++) {
+                    values = values + "('" + userName + "','" + questions[i] + "','" + answers[i]  + "'), ";
+                }
+                p3 = DButilsAzure.execQuery("INSERT INTO SecurityQuestions (userName, question, answer) VALUES "
+                    + values.substring(0, values.length - 2));
                 p3.then(function (ans3) {
                     res.send(ans2);
                 });
